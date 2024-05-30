@@ -1,10 +1,10 @@
 'use client'
 
-import { createContext, Dispatch, SetStateAction, useState, useContext } from "react";
+import { createContext, Dispatch, SetStateAction, useState, useContext, useEffect } from "react";
 
 interface contextProps {
-    username: string;
-    setUsername: Dispatch<SetStateAction<string>>,
+    username: string | null;
+    setUsername: Dispatch<SetStateAction<string | null>>,
     isAuthenticated: boolean,
     setAuthenticated: Dispatch<SetStateAction<boolean>>,
     isEdit: boolean,
@@ -12,7 +12,7 @@ interface contextProps {
 }
 
 const GlobalContext = createContext<contextProps>({
-    username: '',
+    username: null,
     setUsername: () => '',
     isAuthenticated: false,
     setAuthenticated: () => false,
@@ -22,9 +22,12 @@ const GlobalContext = createContext<contextProps>({
 
 export const GlobalContextProvider = ({children}: {children: React.ReactNode}) => {
 
-    const [username, setUsername] = useState<string>('')
+    const [username, setUsername] = useState<string | null>(null)
     const [isEdit, setIsEdit] = useState<boolean>(false)
     const [isAuthenticated, setAuthenticated] = useState<boolean>(false)
+    useEffect(() => {
+        setUsername(localStorage.getItem('username'))
+    }, [])
 
     return (
         <GlobalContext.Provider value={{username, setUsername, isEdit, setIsEdit, isAuthenticated, setAuthenticated}}>

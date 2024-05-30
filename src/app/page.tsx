@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react'
+import React, {useState, FormEventHandler} from 'react'
 import { getAccessToken } from './utils/handleToken';
 import { message } from 'antd';
 
@@ -9,12 +9,67 @@ type analyzedObj = {
     label: string,
     score: number
 }
+type fileForm = {
+    file: File | null,
+    description: string
+}
 
 export default function Home() {
 
     const [text, setText] = useState<string>('')
     const [error, setError] = useState<string>('')
+    const [formData, setFormData] = useState<fileForm>({
+        file: null,
+        description: ''
+    })
+    const [errorFile, setErrorFile] = useState({
+        file: "",
+        description: ''
+    })
+
+
+
     const [analyzedObj, setAnalyzedObj] = useState<analyzedObj>({label: '', score: 0})
+
+    async function handleSubmitFile(e: any){
+        e.preventDefault()
+
+        if(formData.file === null){
+            setErrorFile({
+                ...errorFile,
+                file: "File is required can't be null"
+            })
+            return
+        }
+
+        if(formData.description === ''){
+            setErrorFile({
+                ...errorFile,
+                description: "description is required"
+            })
+            return
+        }
+
+        const urlFile = `${process.env.API_URL}/upload/`
+
+        const form_data = new FormData()
+        form_data.append('file', formData.file, formData.file.name)
+        form_data.append('description', formData.description)
+
+        const response = await (await fetch(urlFile, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${getAccessToken()}`
+            },
+            body: form_data
+        })).json()
+
+        if(response.detail){
+            message.error(response.detail)
+        }else{
+            message.success(response.message)
+        }
+    }
 
     async function handleSubmit(e: any) {
         e.preventDefault();
@@ -63,6 +118,27 @@ export default function Home() {
                     </> :
                     null
                 }
+                <h3 className='text-lg font-semibold'>Upload your file</h3>
+                <form onSubmit={handleSubmitFile}>
+                    <input 
+                        type='file'
+                        placeholder='choose your file'
+                        name='file'
+                        className="rounded-lg my-1 border border-black dark:bg-slate-500 dark:text-white text-base w-full p-4 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
+                        accept='image/png, image/jpeg, application/pdf, .mp3'
+                        onChange={(e) => setFormData({...formData, file: e.target.files ? e.target?.files[0] : null})}
+                    />
+                    {errorFile.file ? <p className="text-sm text-red-500 drop-shadow-xl">{errorFile.file}</p> : null}
+                    <textarea 
+                        rows={4}
+                        name='description'
+                        placeholder='Description'
+                        className="rounded-lg my-1 border border-black dark:bg-slate-500 dark:text-white text-base w-full p-4 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1"
+                        onChange={(e) => setFormData({...formData, description: e.target.value})}
+                    />
+                    {errorFile.description ? <p className="text-sm text-red-500 drop-shadow-xl">{errorFile.description}</p> : null}
+                    <button type="submit" className="rounded-full my-1 border border-black bg-slate-800 text-white text-base w-full p-4 hover:bg-slate-700 active:scale-75 transition">Upload</button>
+                </form>
             </div>
         </div>
         </main>

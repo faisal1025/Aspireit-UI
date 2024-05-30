@@ -58,6 +58,10 @@ Now in the analyzer form in the home page we can afer login we can put text to a
   title="Optional title"
   style="display: inline-block; margin: 0 auto; max-width: 100%">
 
+## File Uploder and Downlod System also created
+
+User can also upload there file but only after authentication and all the files he has uploaded can be seen in his dashboard and user can also download that file again from there in there local system.
+
 ## Step to setup
 - Clone the repo
 - Install all dependencies using `npm install`

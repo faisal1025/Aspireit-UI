@@ -13,7 +13,7 @@ const Navbar = () => {
     const {replace} = useRouter()
 
     function logout() {
-        setUsername('');
+        setUsername(null);
         clearTokens()
         replace('/login')
     }
@@ -25,11 +25,13 @@ const Navbar = () => {
             </div>
             <div className='flex items-center gap-3'>
                 {
-                    username !== '' ?
+                    username !== null ?
                     <>
+                    <Link href={`/dashboard/${username}`}>
                     <Avatar style={{ backgroundColor: '#f56a00', verticalAlign: 'middle' }} size="large" gap={4}>
                         {username[0].toUpperCase()}
                     </Avatar>
+                    </Link>
                     <button onClick={() => logout()} className='hover:underline text-blue-500'>Logout</button> 
                     </>
                     :

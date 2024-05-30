@@ -34,7 +34,6 @@ const EditUser = ({initialState}: {initialState: User}) => {
                 body: JSON.stringify(values),
             })
             const data = await response.json();
-            console.log("data: ", data);
             message.success(data.message)
             resetForm()
             setIsEdit(false)
@@ -53,7 +52,7 @@ const EditUser = ({initialState}: {initialState: User}) => {
     }, [])
 
     return (
-        <div className={`h-[90vh] absolute flex justify-center items-center ${isEdit ? 'translate-y-0' : '-translate-y-[130%]'} transition-transform`}>
+        <div className={`h-screen absolute bg-slate-700 bg-opacity-50 w-full flex justify-center items-center ${isEdit ? 'translate-y-0' : '-translate-y-[130%]'} transition-transform`}>
             <div className='rounded-lg p-8 bg-gradient-to-r from-blue-300 to-blue-100 text-white border border-slate-100'>
             <h1 className='text-4xl font-semibold'>Edit User {initialState.first_name}</h1>
             <form onSubmit={handleSubmit} className='w-[30rem] py-2 text-black'>
