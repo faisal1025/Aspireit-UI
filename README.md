@@ -58,6 +58,13 @@ Now in the analyzer form in the home page we can afer login we can put text to a
   title="Optional title"
   style="display: inline-block; margin: 0 auto; max-width: 100%">
 
+## Step to setup
+- Clone the repo
+- Install all dependencies using `npm install`
+- Run server using `npm run dev`
+
+Your server will start running
+
 Thanks for being with me and review my project. Hope a positive response from your side. 
 
 <strong>For depth knowledge of backend please visit my backend repository <a href='https://github.com/faisal1025/Aspireit-API'>click here</a></strong>
